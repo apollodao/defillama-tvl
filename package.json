@@ -1,0 +1,24 @@
+{
+  "name": "defillama-apollo",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "Sturdy",
+  "license": "Copyright Apollo DAO",
+  "private": true,
+  "scripts": {
+    "start": "ts-node src/index.ts"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "bignumber.js": "^9.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.1",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
+}
