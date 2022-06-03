@@ -6,7 +6,7 @@ import { FactoryStrategyInfoResponse } from '../types/get_strategies_response';
 
 const limit = 1;
 
-async function strategies(height: number) {
+async function strategies() {
   let totalStrategies: FactoryStrategyInfoResponse[] = [];
   let current = 0;
   do {
@@ -19,7 +19,9 @@ async function strategies(height: number) {
     const pagedStrategies: FactoryStrategyInfoResponse[] = (
       await axios.get(url)
     ).data.result.strategies;
-    console.log(`pagedStrategies:`, pagedStrategies);
+
+    console.log(`Fetched ${pagedStrategies.length} strategies.`);
+
     totalStrategies = totalStrategies.concat(pagedStrategies);
     current += limit;
     if (current === 30) {
@@ -29,9 +31,9 @@ async function strategies(height: number) {
   return totalStrategies;
 }
 
-async function lpPriceInUst(pool: string) {
+async function lpPriceInUst(height: number, pool: string) {
   const url =
-    `https://lcd.terra.dev/wasm/contracts/${pool}/store?query_msg=` +
+    `https://fcd.terra.dev/wasm/contracts/${pool}/store?height=${height}&query_msg=` +
     encodeURIComponent(`{"pool":{}}`);
 
   const res: PoolResponse = (await axios.get(url)).data.result;
@@ -70,7 +72,7 @@ async function strategyTvl(
   const pair: string = (await axios.get(url)).data.result.minter;
 
   //Get the LP token price in UST (Only works for UST pairs)
-  const lpPrice = await lpPriceInUst(pair);
+  const lpPrice = await lpPriceInUst(height, pair);
 
   //Get the number of LP tokens in the strategy at the specific height
   url =
@@ -85,24 +87,22 @@ async function strategyTvl(
   return tvl;
 }
 
-async function tvl(timestamp: number, ethBlock: number, chainBlocks: number) {
-  const strats = await strategies(chainBlocks);
-
+async function tvl(height: number, strats: FactoryStrategyInfoResponse[]) {
   let total = new BigNumber(0);
 
   for (let i = 0; i < strats.length; i++) {
     const strategy = strats[i];
-    total = total.plus(await strategyTvl(strategy, chainBlocks));
+    total = total.plus(await strategyTvl(strategy, height));
   }
 
   console.log(`total tvl: ${total.toString()}`);
 
-  // const total = strats.reduce((t, s) => t + Number(s.tvl), 0);
-  return {
-    '0xa47c8bf37f92abed4a126bda807a7b7498661acd': new BigNumber(
-      total.multipliedBy(1e12)
-    ).toFixed(0)
-  };
+  // return {
+  //   '0xa47c8bf37f92abed4a126bda807a7b7498661acd': new BigNumber(
+  //     total.multipliedBy(1e12)
+  //   ).toFixed(0)
+  // };
+  return total;
 }
 
 module.exports = {
@@ -111,6 +111,25 @@ module.exports = {
   tvl
 };
 
-tvl(0, 0, 7544910).then((res) => {
-  console.log(`res:`, res);
-});
+async function main() {
+  const depegHeight = 7544910;
+  const dayInBlocks = 13130;
+
+  let height = depegHeight;
+  let total = new BigNumber(0);
+
+  const strats = await strategies();
+
+  for (let i = 0; i < 30; i++) {
+    const dayTvl = await tvl(height, strats);
+    console.log(`TVL for height ${height}: ${dayTvl.toFixed(0)}`);
+    total = total.plus(dayTvl);
+    height -= dayInBlocks;
+  }
+
+  const result = total.div(30);
+
+  console.log(`30 Day Average TVL: ${result.toFixed(0)}`);
+}
+
+main();
