@@ -48,6 +48,15 @@ const warchest_assets: WarchestAsset[] = [
     balance_query: getXAstroBalance,
     price_query: getXAstroPrice
   }
+  // todo
+  // apollo-ust lp
+  // apollo
+  // mars lockdrop ust
+  // yluna
+  // pluna
+  // astro-ust lp
+  // xmars
+  // kinetic lockdrop ust
 ];
 
 // return warchest assets
@@ -70,7 +79,6 @@ const query_assets = async (height: number) => {
     assets.push(asset);
   }
   return {
-    height,
     value_total,
     assets
   };
