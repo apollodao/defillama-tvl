@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { contractQuery } from '../network';
 
 // fetch aUST balance
@@ -28,7 +29,8 @@ export const getaUSTPrice = async (height: number) => {
       },
       height
     );
-    return parseInt(output.exchange_rate);
+
+    return new BigNumber(output.exchange_rate).toNumber();
   } catch (error) {
     return 0;
   }
