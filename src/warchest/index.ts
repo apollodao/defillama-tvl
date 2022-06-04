@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { loop_blocks } from '../util';
 import {
   getAstroPrice,
   getAstroBalance,
@@ -144,21 +145,6 @@ const query_assets = async (height: number) => {
   };
 };
 
-// loop backwards through blocks (days) starting at depeg event.
-const loop_blocks = async (
-  callback: (height: number) => void = () => {},
-  days: number = 30,
-  start_height: number = 7544910,
-  days_interval: number = 13130
-) => {
-  let height: number = start_height;
-
-  for (let i = 0; i < days; i++) {
-    await callback(height);
-    height -= days_interval;
-  }
-};
-
 // main query
 // loop through days
 //  query assets
@@ -166,9 +152,9 @@ const loop_blocks = async (
 
 export const warchest_query = async () => {
   // loop blocks
-  const days = 30; // set to 30 for real report. lower number for testing
+  const days = 1; // set to 30 for real report. lower number for testing
   let running_total: BigNumber = new BigNumber(0);
-  await loop_blocks(async (height) => {
+  await loop_blocks(async (height: number) => {
     const { value_total, assets } = await query_assets(height);
     console.log(
       {
