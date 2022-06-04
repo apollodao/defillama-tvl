@@ -59,8 +59,8 @@ export const networks: any = {
       APOLLOUSTLP: {
         type: 'stable-lp',
         token_1: 'APOLLO',
-        lp_token: '',
-        pair_pool: 'terra1a04v570f9cxp49mk06vjsm8axsswndpwwt67k4'
+        lp_token: 'terra1zuktmswe9zjck0xdpw2k79t0crjk86fljv2rm0',
+        pair_pool: 'terra1zpnhtf9h5s7ze2ewlqyer83sr4043qcq64zfc4'
       },
       MARSUSTLP: {
         type: 'stable-lp',
@@ -76,7 +76,7 @@ export const networks: any = {
       },
       ASTRO: 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3',
       XASTRO: 'terra14lpnyzc9z4g3ugr4lhm8s4nle0tq8vcltkhzh7',
-      APOLLO: '',
+      APOLLO: 'terra100yeqvww74h4yaejj6h733thgcafdaukjtw397',
       XMARS: 'terra1a04v570f9cxp49mk06vjsm8axsswndpwwt67k4',
       mars_staking: 'terra1y8wwr5q24msk55x9smwn0ptyt24fxpwm4l7tjl',
       astro_staking: 'terra1nq4aszdm82wujstxwpjxtvckg7ghu63mqkey33',

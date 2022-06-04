@@ -19,6 +19,7 @@ import {
   getPLunaBalance,
   getPLunaExchangeRate
 } from '../data/prism';
+import { getApolloBalance, getApolloPrice } from '../data/apollo';
 import { getStaderBalance } from '../data/stader';
 import { WarchestAsset } from '../../types/asset';
 
@@ -63,16 +64,37 @@ const warchest_assets: WarchestAsset[] = [
     symbol: 'XASTRO',
     balance_query: getXAstroBalance,
     price_query: getXAstroPrice
+  },
+  {
+    symbol: 'APOLLO',
+    balance_query: getApolloBalance,
+    price_query: getApolloPrice
   }
-  // todo
-  // apollo-ust lp
-  // apollo
-  // mars lockdrop ust
-  // yluna
-  // pluna
-  // astro-ust lp
-  // xmars
-  // kinetic lockdrop ust
+  // {
+  //   symbol: 'APOLLO-UST LP',
+  //   balance_query: getXAstroBalance,
+  //   price_query: getXAstroPrice
+  // },
+  // {
+  //   symbol: 'Mars Lockdrop UST',
+  //   balance_query: getXAstroBalance,
+  //   price_query: getXAstroPrice
+  // },
+  // {
+  //   symbol: 'ASTRO-UST LP',
+  //   balance_query: getXAstroBalance,
+  //   price_query: getXAstroPrice
+  // },
+  // {
+  //   symbol: 'XMARS',
+  //   balance_query: getXAstroBalance,
+  //   price_query: getXAstroPrice
+  // },
+  // {
+  //   symbol: 'Kinetic Lockdrop UST',
+  //   balance_query: getXAstroBalance,
+  //   price_query: getXAstroPrice
+  // },
 ];
 
 // return warchest assets
