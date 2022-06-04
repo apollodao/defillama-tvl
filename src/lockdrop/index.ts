@@ -1,9 +1,7 @@
 import { loop_blocks } from '../util';
-import { contractQuery } from '../network';
 import { getLockdropInfo } from '../data/lockdrop';
 import { getXAstroPrice } from '../data/astro';
 import BigNumber from 'bignumber.js';
-import request from 'axios';
 import axios from 'axios';
 
 const query_lockdrop_contract = async (height: number) => {
@@ -42,13 +40,8 @@ export const lockdrop_query = async () => {
       xastro_price: xastro_price.toNumber()
     });
 
-    if (!total_value.isNaN()) {
-      running_value = running_value.plus(total_value);
-    }
-
-    if (!xastro_balance.isNaN()) {
-      running_balance = running_balance.plus(xastro_balance);
-    }
+    running_value = running_value.plus(total_value);
+    running_balance = running_balance.plus(xastro_balance);
   }, days);
 
   console.log(output);
