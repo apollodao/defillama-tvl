@@ -20,3 +20,8 @@
 ```
 > yarn warchest
 ```
+
+### Lockdrop TVL Report
+```
+> yarn lockdrop
+```
