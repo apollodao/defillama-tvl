@@ -21,6 +21,10 @@ import {
 } from '../data/prism';
 import { getApolloBalance, getApolloPrice } from '../data/apollo';
 import { getStaderBalance } from '../data/stader';
+import { getTokenBalance } from '../network';
+import { getXMarsPrice } from '../data/mars';
+import { getUSTLockedInKinetic } from '../data/kinetic';
+
 import { WarchestAsset } from '../../types/asset';
 
 // build queries and populate this array to add to report
@@ -69,25 +73,27 @@ const warchest_assets: WarchestAsset[] = [
     symbol: 'APOLLO',
     balance_query: getApolloBalance,
     price_query: getApolloPrice
-  }
+  },
   // TODO: finish porting these assets
   // {
   //   symbol: 'APOLLO-UST LP',
   //   balance_query: getXAstroBalance,
   //   price_query: getXAstroPrice
   // },
-  // {
-  //   symbol: 'Mars Lockdrop UST',
-  //   balance_query: getXAstroBalance,
-  //   price_query: getXAstroPrice
-  // },
+  {
+    symbol: 'XMARS',
+    balance_query: async (height: number) => {
+      return getTokenBalance(height, 'XMARS');
+    },
+    price_query: getXMarsPrice
+  }
   // {
   //   symbol: 'ASTRO-UST LP',
   //   balance_query: getXAstroBalance,
   //   price_query: getXAstroPrice
   // },
   // {
-  //   symbol: 'XMARS',
+  //   symbol: 'xMars Lockdrop UST',
   //   balance_query: getXAstroBalance,
   //   price_query: getXAstroPrice
   // },
