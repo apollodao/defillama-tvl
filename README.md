@@ -6,22 +6,22 @@
 ## Installation
 
 ```sh
-> yarn
+yarn
 ```
 
 ## Use
 
 ### Vault TVL Report
 ```
-> yarn start
+yarn start
 ```
 
 ### Warchest TVL Report
 ```
-> yarn warchest
+yarn warchest
 ```
 
 ### Lockdrop TVL Report
 ```
-> yarn lockdrop
+yarn lockdrop
 ```
