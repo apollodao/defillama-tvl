@@ -70,6 +70,7 @@ const warchest_assets: WarchestAsset[] = [
     balance_query: getApolloBalance,
     price_query: getApolloPrice
   }
+  // TODO: finish porting these assets
   // {
   //   symbol: 'APOLLO-UST LP',
   //   balance_query: getXAstroBalance,
