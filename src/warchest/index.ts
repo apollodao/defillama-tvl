@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-//import { getAstroPrice, getAstroBalance } from '../data/astro';
 import {
   getAstroPrice,
   getAstroBalance,
@@ -19,10 +18,19 @@ import {
   getPLunaBalance,
   getPLunaExchangeRate
 } from '../data/prism';
-import { getApolloBalance, getApolloPrice } from '../data/apollo';
+import {
+  getApolloBalance,
+  getApolloPrice,
+  getApolloLpUusdAmount,
+  getApolloLPPrice
+} from '../data/apollo';
 import { getStaderBalance } from '../data/stader';
-import { getTokenBalance } from '../network';
-import { getXMarsPrice } from '../data/mars';
+import {
+  getTokenBalance,
+  getApolloVaultBalance,
+  getLPTokenValue
+} from '../network';
+import { getXMarsPrice, getMarsLockdropInfo } from '../data/mars';
 import { getUSTLockedInKinetic } from '../data/kinetic';
 
 import { WarchestAsset } from '../../types/asset';
@@ -74,34 +82,41 @@ const warchest_assets: WarchestAsset[] = [
     balance_query: getApolloBalance,
     price_query: getApolloPrice
   },
-  // TODO: finish porting these assets
-  // {
-  //   symbol: 'APOLLO-UST LP',
-  //   balance_query: getXAstroBalance,
-  //   price_query: getXAstroPrice
-  // },
+  {
+    symbol: 'APOLLO-UST LP',
+    balance_query: getApolloLpUusdAmount,
+    price_query: getApolloLPPrice
+  },
   {
     symbol: 'XMARS',
     balance_query: async (height: number) => {
       return getTokenBalance(height, 'XMARS');
     },
     price_query: getXMarsPrice
+  },
+  {
+    symbol: 'ASTRO-UST LP',
+    balance_query: async (height: number) => {
+      return getApolloVaultBalance(height, 'ASTROUSTLP');
+    },
+    price_query: async (height: number) => {
+      return getLPTokenValue(height, 'ASTROUSTLP');
+    }
+  },
+  {
+    symbol: 'Mars Lockdrop UST',
+    balance_query: getMarsLockdropInfo,
+    price_query: async (height: number) => {
+      return 1; // ust price is 1
+    }
+  },
+  {
+    symbol: 'Kinetic Lockdrop UST',
+    balance_query: getUSTLockedInKinetic,
+    price_query: async (height: number) => {
+      return 1; // ust price is 1
+    }
   }
-  // {
-  //   symbol: 'ASTRO-UST LP',
-  //   balance_query: getXAstroBalance,
-  //   price_query: getXAstroPrice
-  // },
-  // {
-  //   symbol: 'xMars Lockdrop UST',
-  //   balance_query: getXAstroBalance,
-  //   price_query: getXAstroPrice
-  // },
-  // {
-  //   symbol: 'Kinetic Lockdrop UST',
-  //   balance_query: getXAstroBalance,
-  //   price_query: getXAstroPrice
-  // },
 ];
 
 // return warchest assets
@@ -151,7 +166,7 @@ const loop_blocks = async (
 
 export const warchest_query = async () => {
   // loop blocks
-  const days = 1; // set to 30 for real report. lower number for testing
+  const days = 30; // set to 30 for real report. lower number for testing
   let running_total: BigNumber = new BigNumber(0);
   await loop_blocks(async (height) => {
     const { value_total, assets } = await query_assets(height);

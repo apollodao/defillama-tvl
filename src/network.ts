@@ -34,7 +34,7 @@ export const contractQuery = async (
     const res = await lcd.wasm.contractQuery(address, msg, { height });
     return res;
   } catch (error) {
-    console.log('error running contract query:', { address, msg });
+    //console.log('error running contract query:', { address, msg });
     return error;
   }
 };
@@ -135,7 +135,7 @@ export const getApolloVaultBalance = async (
   lptoken: string,
   wallet_address?: string,
   network = 'classic'
-) => {
+): Promise<number> => {
   if (!wallet_address) {
     wallet_address = networks[network].contracts.apollo_warchest;
   }
@@ -153,9 +153,11 @@ export const getApolloVaultBalance = async (
       height
     );
 
+    // hard set zero until i can work out querying strategy balance at block height
+    return 0;
     return parseInt(res.strategies[0].base_token_balance);
   } catch (error) {
-    console.log(error);
-    return error;
+    console.log('Error fetching vault balance');
+    return 0;
   }
 };

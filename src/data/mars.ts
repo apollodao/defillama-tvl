@@ -1,7 +1,7 @@
 import { networks } from '../networks';
 import { contractQuery, getTokenValueFromStableLP } from '../network';
 
-const getXMarsExchange = async (height: number, network = 'classic') => {
+export const getXMarsExchange = async (height: number, network = 'classic') => {
   try {
     const res: any = await contractQuery(
       networks[network].contracts.mars_staking,
@@ -17,7 +17,7 @@ const getXMarsExchange = async (height: number, network = 'classic') => {
   }
 };
 
-const getMarsPrice = async (height: number) => {
+export const getMarsPrice = async (height: number) => {
   try {
     const mars_price = await getTokenValueFromStableLP(height, 'MARSUSTLP');
     return mars_price;
@@ -38,8 +38,19 @@ export const getXMarsPrice = async (height: number) => {
   }
 };
 
-module.exports = {
-  getXMarsExchange,
-  getMarsPrice,
-  getXMarsPrice
+export const getMarsLockdropInfo = async (height: number) => {
+  try {
+    const output: any = await contractQuery(
+      'terra1n38982txtv2yygtcfv3e9wp2ktmjyxl6z88rma',
+      {
+        user_info: {
+          address: 'terra1hxrd8pnqytqpelape3aemprw3a023wryw7p0xn'
+        }
+      },
+      height
+    );
+    return parseInt(output.total_ust_locked);
+  } catch (error) {
+    return 0;
+  }
 };
