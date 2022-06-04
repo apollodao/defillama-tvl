@@ -75,6 +75,7 @@ export const networks: any = {
         pair_pool: 'terra1yjg0tuhc6kzwz9jl8yqgxnf2ctwlfumnvscupp'
       },
       ASTRO: 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3',
+      XASTRO: 'terra14lpnyzc9z4g3ugr4lhm8s4nle0tq8vcltkhzh7',
       APOLLO: '',
       XMARS: 'terra1a04v570f9cxp49mk06vjsm8axsswndpwwt67k4',
       mars_staking: 'terra1y8wwr5q24msk55x9smwn0ptyt24fxpwm4l7tjl',
@@ -162,6 +163,7 @@ export const networks: any = {
         pair_pool: 'terra1yjg0tuhc6kzwz9jl8yqgxnf2ctwlfumnvscupp'
       },
       ASTRO: 'terra1xj49zyqrwpv5k928jwfpfy2ha668nwdgkwlrg3',
+      XASTRO: 'terra14lpnyzc9z4g3ugr4lhm8s4nle0tq8vcltkhzh7',
       APOLLO: '',
       XMARS: 'terra1a04v570f9cxp49mk06vjsm8axsswndpwwt67k4',
       mars_staking: 'terra1y8wwr5q24msk55x9smwn0ptyt24fxpwm4l7tjl',

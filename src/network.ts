@@ -10,8 +10,8 @@ const connectLcd = () => {
 
 export const getTokenValue = async (
   height: number,
-  token = '',
-  network = 'classic'
+  token: string = '',
+  network: string = 'classic'
 ) => {
   const token_info = networks[network].tokens.find(
     (t: any) => t.symbol === token
@@ -34,7 +34,7 @@ export const contractQuery = async (
     const res = await lcd.wasm.contractQuery(address, msg, { height });
     return res;
   } catch (error) {
-    console.log(error);
+    console.log('error running contract query:', { address, msg });
     return error;
   }
 };
@@ -43,7 +43,7 @@ export const getTokenBalance = async (
   height: number,
   token = 'ASTRO',
   wallet_address = ''
-) => {
+): Promise<number> => {
   if (!wallet_address) {
     wallet_address = networks['classic'].contracts.apollo_warchest;
   }
@@ -56,10 +56,11 @@ export const getTokenBalance = async (
       },
       height
     );
+
     return parseInt(res.balance);
   } catch (error) {
-    console.log(error);
-    return error;
+    console.log('Error fetching token balance: ');
+    return 0;
   }
 };
 
@@ -79,7 +80,7 @@ const getTotalSupply = async (height: number, token = '') => {
   }
 };
 
-const getLPUSTShare = async (height: number, lptoken = '') => {
+const getLPUSTShare = async (height: number, lptoken = ''): Promise<number> => {
   const lp_info: any = await getLPInfo(height, lptoken);
   return parseInt(
     lp_info.assets.find((a: any) => a.info.hasOwnProperty('native_token'))
@@ -105,7 +106,7 @@ export const getLPTokenValue = async (height: number, lptoken = '') => {
   return total_value / parseInt(circulating_supply.total_share);
 };
 
-const getLPInfo = async (height: number, lptoken = '') => {
+const getLPInfo = async (height: number, lptoken: string = '') => {
   try {
     const res = await contractQuery(
       networks['classic'].contracts[lptoken].pair_pool,
@@ -122,7 +123,7 @@ const getLPInfo = async (height: number, lptoken = '') => {
 export const getTokenValueFromStableLP = async (
   height: number,
   lptoken = ''
-) => {
+): Promise<number> => {
   const ust_share = await getLPUSTShare(height, lptoken);
   const token_share = await getLPNonUSTShare(height, lptoken);
 
@@ -157,17 +158,4 @@ export const getApolloVaultBalance = async (
     console.log(error);
     return error;
   }
-};
-
-module.exports = {
-  networks,
-  connectLcd,
-  contractQuery,
-  getLPTotalValue,
-  getLPTokenValue,
-  getLPInfo,
-  getTotalSupply,
-  getTokenBalance,
-  getTokenValueFromStableLP,
-  getApolloVaultBalance
 };

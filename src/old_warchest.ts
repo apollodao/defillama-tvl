@@ -206,7 +206,7 @@ async function getApolloTokenBalance(height: number, client: LCDClient) {
   }
 }
 
-async function getApolloExchangeRate() {
+async function getApolloExchangeRate(height: number) {
   try {
     const res = await request.get(
       'https://price-api-mainnet.apollo.farm/v1/apollo/price?interval=1m'

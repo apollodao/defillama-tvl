@@ -1,5 +1,6 @@
 const axios = require('axios');
 // const sdk = require('@defillama/sdk');
+import { warchest_query } from './warchest';
 import BigNumber from 'bignumber.js';
 import { PoolResponse } from '../types/pool_response';
 import { FactoryStrategyInfoResponse } from '../types/get_strategies_response';
@@ -111,7 +112,7 @@ module.exports = {
   tvl
 };
 
-async function main() {
+async function print_vault_tvl() {
   const depegHeight = 7544910;
   const dayInBlocks = 13130;
 
@@ -132,4 +133,10 @@ async function main() {
   console.log(`30 Day Average TVL: ${result.toFixed(0)}`);
 }
 
-main();
+(async () => {
+  // Vault TVL
+  // await print_vault_tvl();
+
+  // warchest Query
+  await warchest_query();
+})();

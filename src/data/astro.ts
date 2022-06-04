@@ -1,5 +1,9 @@
 import { networks } from '../networks';
-import { contractQuery, getTokenBalance, getTokenValue } from '../network';
+import {
+  contractQuery,
+  getTokenBalance,
+  getTokenValueFromStableLP
+} from '../network';
 
 // get astro deposited into staking contract
 const getAstroDeposited = async (height: number, network = 'classic') => {
@@ -13,7 +17,8 @@ const getAstroDeposited = async (height: number, network = 'classic') => {
     );
     return parseFloat(res);
   } catch (error) {
-    console.log(`ERROR: ${error}`);
+    // console.log(`ERROR: ${error}`);
+    console.log('error fetching astro balance');
     return 0;
   }
 };
@@ -36,57 +41,42 @@ const getXAstroSupply = async (height: number, network = 'classic') => {
     );
     return parseFloat(res.total_supply);
   } catch (error) {
-    console.log(`ERROR: ${error}`);
+    // console.log(`ERROR: ${error}`);
+    console.log('error fetching xastro supply');
     return 0;
   }
 };
 
 // fetch astro balance
-export const getAstroBalance = async (height: number) => {
+export const getAstroBalance = async (height: number): Promise<number> => {
   try {
     const astro_balance = await getTokenBalance(height, 'ASTRO', '');
     return astro_balance;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    console.log('error fetching astro balance');
     return 0;
   }
 };
 
 // fetch xastro balance
-export const getXAstroBalance = async (height: number) => {
+export const getXAstroBalance = async (height: number): Promise<number> => {
   try {
     const x_astro_balance = await getTokenBalance(height, 'XASTRO', '');
     return x_astro_balance;
   } catch (error) {
-    console.log(error);
+    console.log('error fetching xastro balance');
     return 0;
   }
 };
 
-// get astro exchange rate from chain
-// const getXAstroExchange = async (network = "mainnet") => {
-//   try {
-//     const res = await contractQuery(
-//       networks[network].contracts.astro_staking,
-//       {
-//         astro_per_x_astro: {},
-//       },
-//       network
-//     );
-//     return parseFloat(res);
-//   } catch (error) {
-//     console.log(error);
-//     return 0;
-//   }
-// };
-
 // get astro value from ASTRO-UST LP pool
-const getAstroPrice = async (height: number) => {
+export const getAstroPrice = async (height: number) => {
   try {
-    const astro_price = await getTokenValue(height, 'ASTRO');
+    const astro_price = await getTokenValueFromStableLP(height, 'ASTROUSTLP');
     return astro_price;
   } catch (error) {
-    console.log(`ERROR: ${error}`);
+    console.log('error fetching astro price');
     return 0;
   }
 };
@@ -102,7 +92,8 @@ export const getXAstroPrice = async (height: number) => {
 
     return astro_price * astro_xastro_exchange;
   } catch (error) {
-    console.log(`ERROR: ${error}`);
+    console.log('error fetching xastro price');
+    //console.log(`ERROR: ${error}`);
     return 0;
   }
 };
@@ -117,15 +108,8 @@ const getXAstroExchange = async (height: number) => {
 
     return astro_xastro_exchange;
   } catch (error) {
-    console.log(`ERROR: ${error}`);
+    //console.log(`ERROR: ${error}`);
+    console.log('error fetching x astro price');
     return 0;
   }
-};
-
-module.exports = {
-  getXAstroExchange,
-  getAstroPrice,
-  getXAstroPrice,
-  getAstroBalance,
-  getXAstroBalance
 };
