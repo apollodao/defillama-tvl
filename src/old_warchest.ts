@@ -26,16 +26,6 @@ const connectTerra = async () => {
   return terra;
 };
 
-async function contractQuery(
-  height: number,
-  client: LCDClient,
-  contract = 'terra1g7jjjkt5uvkjeyhp8ecdz4e4hvtn83sud3tmh2',
-  query: any = { get_total_tvl: {} }
-) {
-  const result = await client.wasm.contractQuery(contract, query, { height });
-  return result;
-}
-
 async function getApolloLpTokenBalance(height: number, client: LCDClient) {
   try {
     const output: any = await contractQuery(
@@ -182,67 +172,9 @@ async function getApolloExchangeRate(height: number) {
   }
 }
 
-async function getYLunaBalance(height: number, client: LCDClient) {
-  try {
-    const output: any = await contractQuery(
-      height,
-      client,
-      'terra1ns5nsvtdxu53dwdthy3yxs6x3w2hf3fclhzllc',
-      {
-        reward_info: {
-          staker_addr: 'terra1hxrd8pnqytqpelape3aemprw3a023wryw7p0xn'
-        }
-      }
-    );
-    return parseFloat(output.bond_amount);
-  } catch (error) {
-    console.log(error);
-    return 0;
-  }
-}
-
-async function getYLunaExchangeRate(height: number) {
-  try {
-    const res = await request.get(
-      `https://fcd.terra.dev/terra/wasm/v1beta1/contracts/terra1yrc0zpwhuqezfnhdgvvh7vs5svqtgyl7pu3n6c/store?height=${height}&query_msg=eyJzaW11bGF0ZV9zd2FwX29wZXJhdGlvbnMiOnsib2ZmZXJfYW1vdW50IjoiMTAwMDAwMCIsIm9wZXJhdGlvbnMiOlt7InByaXNtX3N3YXAiOnsib2ZmZXJfYXNzZXRfaW5mbyI6eyJjdzIwIjoidGVycmExN3drYWRnMHRhaDU1NHIzNXg2d3ZmZjB5NXM3dmU4bnBjamZ1aHoifSwiYXNrX2Fzc2V0X2luZm8iOnsiY3cyMCI6InRlcnJhMWRoOTQ3OGsycXZxaHFlYWpobjc1YTJhN2RzbmY3NHk1dWtyZWd3In19fSx7InByaXNtX3N3YXAiOnsib2ZmZXJfYXNzZXRfaW5mbyI6eyJjdzIwIjoidGVycmExZGg5NDc4azJxdnFocWVhamhuNzVhMmE3ZHNuZjc0eTV1a3JlZ3cifSwiYXNrX2Fzc2V0X2luZm8iOnsibmF0aXZlIjoidXVzZCJ9fX1dfX0%3D`
-    );
-    return parseFloat(res.data.query_result.amount);
-  } catch (error) {
-    return 0;
-  }
-}
-
-async function getPLunaBalance(height: number, client: LCDClient) {
-  try {
-    const output: any = await contractQuery(
-      height,
-      client,
-      'terra1tlgelulz9pdkhls6uglfn5lmxarx7f2gxtdzh2',
-      {
-        balance: {
-          address: 'terra1hxrd8pnqytqpelape3aemprw3a023wryw7p0xn'
-        }
-      }
-    );
-    return parseFloat(output.balance);
-  } catch (error) {
-    return 0;
-  }
-}
-
-async function getPLunaExchangeRate(height: number) {
-  try {
-    const res = await request.get(
-      `https://fcd.terra.dev/terra/wasm/v1beta1/contracts/terra1yrc0zpwhuqezfnhdgvvh7vs5svqtgyl7pu3n6c/store?height=${height}&query_msg=eyJzaW11bGF0ZV9zd2FwX29wZXJhdGlvbnMiOnsib2ZmZXJfYW1vdW50IjoiMTAwMDAwMCIsIm9wZXJhdGlvbnMiOlt7InByaXNtX3N3YXAiOnsib2ZmZXJfYXNzZXRfaW5mbyI6eyJjdzIwIjoidGVycmExdGxnZWx1bHo5cGRraGxzNnVnbGZuNWxteGFyeDdmMmd4dGR6aDIifSwiYXNrX2Fzc2V0X2luZm8iOnsiY3cyMCI6InRlcnJhMWRoOTQ3OGsycXZxaHFlYWpobjc1YTJhN2RzbmY3NHk1dWtyZWd3In19fSx7InByaXNtX3N3YXAiOnsib2ZmZXJfYXNzZXRfaW5mbyI6eyJjdzIwIjoidGVycmExZGg5NDc4azJxdnFocWVhamhuNzVhMmE3ZHNuZjc0eTV1a3JlZ3cifSwiYXNrX2Fzc2V0X2luZm8iOnsibmF0aXZlIjoidXVzZCJ9fX1dfX0%3D`
-    );
-    return parseFloat(res.data.query_result.amount);
-  } catch (error) {
-    return 0;
-  }
-}
-
 async function getBalances(height: number) {
   const marsLockDropUstBalance = await getMarsLockdropInfo(height, terra);
+
   const apolloLpTokenBalance = await getAstroportApolloLpBalance(height, terra);
   const apolloLpTotalSupply = await getApolloLPTotalSupply(height, terra);
   const apolloLpUusdAmount = await getApolloLpUusdAmount(height, terra).then(

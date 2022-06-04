@@ -13,6 +13,12 @@ import {
   getLunaPrice
 } from '../data/bank';
 import { getaUSTBalance, getaUSTPrice } from '../data/anchor';
+import {
+  getYLunaBalance,
+  getYLunaExchangeRate,
+  getPLunaBalance,
+  getPLunaExchangeRate
+} from '../data/prism';
 import { getStaderBalance } from '../data/stader';
 import { WarchestAsset } from '../../types/asset';
 
@@ -37,6 +43,16 @@ const warchest_assets: WarchestAsset[] = [
     symbol: 'Stader Luna',
     balance_query: getStaderBalance,
     price_query: getLunaPrice
+  },
+  {
+    symbol: 'yLuna',
+    balance_query: getYLunaBalance,
+    price_query: getYLunaExchangeRate
+  },
+  {
+    symbol: 'pLuna',
+    balance_query: getPLunaBalance,
+    price_query: getPLunaExchangeRate
   },
   {
     symbol: 'ASTRO',
