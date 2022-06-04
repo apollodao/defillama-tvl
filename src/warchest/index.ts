@@ -6,9 +6,38 @@ import {
   getXAstroBalance,
   getXAstroPrice
 } from '../data/astro';
+import {
+  getUSTBalance,
+  getUSTPrice,
+  getLunaBalance,
+  getLunaPrice
+} from '../data/bank';
+import { getaUSTBalance, getaUSTPrice } from '../data/anchor';
+import { getStaderBalance } from '../data/stader';
 import { WarchestAsset } from '../../types/asset';
 
+// build queries and populate this array to add to report
 const warchest_assets: WarchestAsset[] = [
+  {
+    symbol: 'UST',
+    balance_query: getUSTBalance,
+    price_query: getUSTPrice
+  },
+  {
+    symbol: 'LUNA',
+    balance_query: getLunaBalance,
+    price_query: getLunaPrice
+  },
+  {
+    symbol: 'aUST',
+    balance_query: getaUSTBalance,
+    price_query: getaUSTPrice
+  },
+  {
+    symbol: 'Stader Luna',
+    balance_query: getStaderBalance,
+    price_query: getLunaPrice
+  },
   {
     symbol: 'ASTRO',
     balance_query: getAstroBalance,
@@ -62,17 +91,25 @@ const loop_blocks = async (
   }
 };
 
+// main query
+// loop through days
+//  query assets
+//  add assets to report
+
 export const warchest_query = async () => {
   // loop blocks
-  const days = 2;
+  const days = 1; // set to 30 for real report. lower number for testing
   let running_total: BigNumber = new BigNumber(0);
   await loop_blocks(async (height) => {
     const { value_total, assets } = await query_assets(height);
-    console.log({
-      height,
-      value_total: value_total.toNumber(),
-      assets
-    });
+    console.log(
+      {
+        height,
+        value_total: value_total.toNumber(),
+        assets
+      },
+      ','
+    );
 
     running_total = running_total.plus(value_total);
   }, days);

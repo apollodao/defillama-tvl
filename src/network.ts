@@ -1,7 +1,7 @@
 import { LCDClient } from '@terra-money/terra.js';
 import { networks } from './networks';
 
-const connectLcd = () => {
+export const lcdClient = (): LCDClient => {
   return new LCDClient({
     chainID: 'columbus-5',
     URL: 'https://fcd.terra.dev'
@@ -29,7 +29,7 @@ export const contractQuery = async (
   msg: any,
   height: number
 ) => {
-  const lcd = connectLcd();
+  const lcd = lcdClient();
   try {
     const res = await lcd.wasm.contractQuery(address, msg, { height });
     return res;

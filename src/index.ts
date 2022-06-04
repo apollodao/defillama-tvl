@@ -135,8 +135,5 @@ async function print_vault_tvl() {
 
 (async () => {
   // Vault TVL
-  // await print_vault_tvl();
-
-  // warchest Query
-  await warchest_query();
+  await print_vault_tvl();
 })();

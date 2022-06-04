@@ -36,24 +36,6 @@ async function contractQuery(
   return result;
 }
 
-async function getAnchorBalance(height: number, client: LCDClient) {
-  try {
-    const output: any = await contractQuery(
-      height,
-      client,
-      'terra1hzh9vpxhsk8253se0vv5jj6etdvxu3nv8z07zu',
-      {
-        balance: {
-          address: 'terra1hxrd8pnqytqpelape3aemprw3a023wryw7p0xn'
-        }
-      }
-    );
-    return output.balance;
-  } catch (error) {
-    return 0;
-  }
-}
-
 async function getApolloLpTokenBalance(height: number, client: LCDClient) {
   try {
     const output: any = await contractQuery(
@@ -85,28 +67,6 @@ async function getAstroportApolloLpBalance(height: number, client: LCDClient) {
       }
     );
     return output.lockup_infos[0].lp_units_locked;
-  } catch (error) {
-    return 0;
-  }
-}
-
-async function getStaderBalance(height: number, client: LCDClient) {
-  try {
-    const output: any = await contractQuery(
-      height,
-      client,
-      'terra1r2vv8cyt0scyxymktyfuudqs3lgtypk72w6m3m',
-      {
-        get_user_computed_info: {
-          user_addr: 'terra1hxrd8pnqytqpelape3aemprw3a023wryw7p0xn',
-          pool_id: 2
-        }
-      }
-    );
-    return (
-      parseInt(output.info.deposit.staked) +
-      parseInt(output.info.pending_rewards)
-    );
   } catch (error) {
     return 0;
   }
@@ -281,57 +241,7 @@ async function getPLunaExchangeRate(height: number) {
   }
 }
 
-async function getAnchorExchangeRate(height: number, client: LCDClient) {
-  try {
-    const output: any = await contractQuery(
-      height,
-      client,
-      'terra1sepfj7s0aeg5967uxnfk4thzlerrsktkpelm5s',
-      {
-        epoch_state: {}
-      }
-    );
-    return output.exchange_rate;
-  } catch (error) {
-    return 0;
-  }
-}
-
-async function getLunaExchangeRate(height: number, client: LCDClient) {
-  try {
-    const output = await client.market.swapRate(new Coin('uluna', 1), 'uusd');
-    return parseFloat(output.toString());
-  } catch (error) {
-    console.log(`Error: ${error}`);
-    return 0;
-  }
-}
-
 async function getBalances(height: number) {
-  const terra = await connectTerra();
-  const res = await terra.bank.balance(
-    'terra1hxrd8pnqytqpelape3aemprw3a023wryw7p0xn'
-  );
-  const uusd = res[0].get('uusd') || new Coin('uusd', '0');
-  const uluna = res[0].get('uluna') || new Coin('uluna', '0');
-  const lunaBalance = await getStaderBalance(height, terra);
-  const lunaStaderBalanceCoin = new Coin('uluna', lunaBalance);
-  const lunaInStaderToUST = await terra.market.swapRate(
-    lunaStaderBalanceCoin,
-    'uusd',
-    { height }
-  );
-  const lunaExchangeRate = await getLunaExchangeRate(height, terra);
-  const lunaInWarchestToUST = await terra.market.swapRate(uluna, 'uusd');
-  const anchorBalance = await getAnchorBalance(height, terra);
-  const anchorExchangeRate = await getAnchorExchangeRate(height, terra);
-
-  const astroTokenBalance = await getAstroTokenBalance(height, terra);
-  const astroTokenExchangeRate = await getTokenValueFromStableLP(
-    height,
-    'ASTROUSTLP'
-  );
-  const yieldFoundryInvestment = await getYieldFoundryDAOSeedInvestment();
   const marsLockDropUstBalance = await getMarsLockdropInfo(height, terra);
   const apolloLpTokenBalance = await getAstroportApolloLpBalance(height, terra);
   const apolloLpTotalSupply = await getApolloLPTotalSupply(height, terra);
