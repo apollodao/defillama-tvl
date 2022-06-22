@@ -1,0 +1,45 @@
+yarn run v1.22.17
+$ ts-node src/lockdrop_query.ts
+[
+  {
+    height: 7544910,
+    block_time: '2022-05-07T14:59:37.792844612Z',
+    total_value: 13213259448696.861,
+    xastro_balance: 4569088817148,
+    xastro_price: 2.8918806303582656
+  },
+  {
+    height: 7531780,
+    block_time: '2022-05-06T14:49:53.986299932Z',
+    total_value: 11818134230823.59,
+    xastro_balance: 3758110306029,
+    xastro_price: 3.1447012643200454
+  },
+  {
+    height: 7518650,
+    block_time: '2022-05-05T14:30:08.250193914Z',
+    total_value: 8629176093398.7295,
+    xastro_balance: 2546560110333,
+    xastro_price: 3.3885617144416584
+  },
+  {
+    height: 7505520,
+    block_time: '2022-05-04T14:12:20.49731768Z',
+    total_value: 7131371351642.362,
+    xastro_balance: 2170216177565,
+    xastro_price: 3.286018888516359
+  },
+  {
+    height: 7492390,
+    block_time: '2022-05-03T13:27:05.484164924Z',
+    total_value: 5267758232464.739,
+    xastro_balance: 1613486638987,
+    xastro_price: 3.2648291626213966
+  }
+]
+5 day:
+    average value: 9211939871405.256
+    average value (demicrofy): 9211939.871405257
+    average balance: 2931492410012.4
+    average balance (demicrofy): 2931492.4100124
+Done in 14.49s.
